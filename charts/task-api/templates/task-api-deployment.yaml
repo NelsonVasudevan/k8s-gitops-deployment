@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-api
+  labels:
+    app: task-api
+spec:
+  replicas: {{ .Values.taskApi.replicaCount }}
+  selector:
+    matchLabels:
+      app: task-api
+  template:
+    metadata:
+      labels:
+        app: task-api
+    spec:
+      containers:
+        - name: task-api
+          image: "{{ .Values.taskApi.image.repository }}:{{ .Values.taskApi.image.tag }}"
+          imagePullPolicy: {{ .Values.taskApi.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.taskApi.port }}
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://{{ .Values.postgres.credentials.user }}:{{ .Values.postgres.credentials.password }}@postgres:{{ .Values.postgres.port }}/{{ .Values.postgres.credentials.database }}"
+          resources:
+            requests:
+              cpu: {{ .Values.taskApi.resources.requests.cpu }}
+              memory: {{ .Values.taskApi.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.taskApi.resources.limits.cpu }}
+              memory: {{ .Values.taskApi.resources.limits.memory }}
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.taskApi.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.taskApi.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 10

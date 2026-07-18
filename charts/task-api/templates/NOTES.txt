@@ -1,0 +1,8 @@
+Task API has been deployed.
+
+To access the app, run:
+  kubectl port-forward svc/task-api {{ .Values.taskApi.service.port }}:{{ .Values.taskApi.service.port }}
+
+Then visit:
+  http://localhost:{{ .Values.taskApi.service.port }}/health
+  http://localhost:{{ .Values.taskApi.service.port }}/docs

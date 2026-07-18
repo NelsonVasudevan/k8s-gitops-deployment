@@ -1,0 +1,28 @@
+taskApi:
+  image:
+    repository: task-api
+    tag: k8s-local
+    pullPolicy: IfNotPresent
+  replicaCount: 2
+  port: 8000
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+  service:
+    type: NodePort
+    port: 8000
+    nodePort: 30080
+
+postgres:
+  image:
+    repository: postgres
+    tag: "16-alpine"
+  port: 5432
+  credentials:
+    user: postgres
+    password: postgres
+    database: taskdb

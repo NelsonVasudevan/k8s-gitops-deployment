@@ -16,7 +16,8 @@ spec:
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "{{ .Values.taskApi.port }}"
-        prometheus.io/path: "/metrics"    spec:
+        prometheus.io/path: "/metrics"    
+spec:
       containers:
         - name: task-api
           image: "{{ .Values.taskApi.image.repository }}:{{ .Values.taskApi.image.tag }}"

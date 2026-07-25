@@ -1,7 +1,7 @@
 taskApi:
   image:
     repository: task-api
-    tag: k8s-local-v2
+    tag: k8s-local-v3
     pullPolicy: IfNotPresent
   replicaCount: 3
   port: 8000

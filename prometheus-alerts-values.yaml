@@ -1,0 +1,21 @@
+serverFiles:
+  alerting_rules.yml:
+    groups:
+      - name: task-api-alerts
+        rules:
+          - alert: HighErrorRate
+            expr: sum(rate(http_requests_total{app="task-api", status=~"5xx"}[5m])) > 0.05
+            for: 2m
+            labels:
+              severity: warning
+            annotations:
+              summary: "task-api error rate is high"
+              description: "More than 5% of requests are failing with 5xx errors for over 2 minutes."
+          - alert: TaskApiDown
+            expr: up{app="task-api"} == 0
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "task-api instance is down"
+              description: "A task-api pod has been unreachable for over 1 minute."
